@@ -1,0 +1,6 @@
+{
+  "name": "Solutions Verre - Service Commercial",
+  "description": "Transformation du verre plat, double vitrage, verre feuilleté, accessoires verre trempé et feuilleté, façonnage vitrines et cabines de douches.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
