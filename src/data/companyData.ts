@@ -5,6 +5,7 @@ export interface GlassService {
   category: string;
   description: string;
   iconType: 'smartphone' | 'layers' | 'window' | 'shield' | 'shower';
+  imageSrc: string;
   keyPoints: string[];
 }
 
@@ -16,6 +17,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Vente d'accessoires pour verre trempé et verre feuilleté",
     description: "Quincaillerie spécialisée, ferrures, pinces, profils aluminium, serrures, gonds et systèmes coulissants pour verre sécurit et feuilleté.",
     iconType: 'smartphone',
+    imageSrc: '/src/assets/images/glass_accessories_1789818594221.jpg',
     keyPoints: [
       "Charnières & pinces inox haute résistance",
       "Profils de maintien en aluminium",
@@ -30,6 +32,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Transformation du verre plat",
     description: "Usinage et façonnage sur mesure : découpe de précision, polissage joint plat poli (JPP), biseautage, perçages et encoches techniques.",
     iconType: 'layers',
+    imageSrc: '/src/assets/images/flat_glass_sheets_1789818609512.jpg',
     keyPoints: [
       "Découpe rectiligne et en forme",
       "Joint Plat Poli (JPP) et arêtes abattues",
@@ -44,6 +47,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Double vitrage",
     description: "Fabrication de vitrages isolants thermiques et acoustiques avec intercalaires étanches pour fenêtres, baies et façades.",
     iconType: 'window',
+    imageSrc: '/src/assets/images/double_glazing_unit_1789818623175.jpg',
     keyPoints: [
       "Isolation thermique renforcée (confort été/hiver)",
       "Affaiblissement acoustique contre les bruits extérieurs",
@@ -58,6 +62,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Verre feuilleté",
     description: "Assemblage de vitrages de sécurité avec films PVB pour la protection des personnes, garde-corps, verrières et retard à l'effraction.",
     iconType: 'shield',
+    imageSrc: '/src/assets/images/laminated_glass_1789818635608.jpg',
     keyPoints: [
       "Protection contre les risques de chute et blessures",
       "Sécurité anti-effraction et retardateur d'intrusion",
@@ -72,6 +77,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Façonnage vitrines et cabines de douches",
     description: "Conception et façonnage sur mesure de vitrines commerciales panoramiques, cloisons vitrées et parois de douches en verre trempé sécurit.",
     iconType: 'shower',
+    imageSrc: '/src/assets/images/shower_cabin_glass_1789818650126.jpg',
     keyPoints: [
       "Vitrines de magasins & devantures commerciales",
       "Cabines et parois de douche sur mesure en verre trempé",
@@ -92,36 +98,40 @@ export interface PhoneNumberInfo {
 }
 
 export const COMMERCIAL_CONTACT = {
+  brandName: "RZ Glass",
+  brandSubtitle: "SAFETY GLASS TECHNOLOGY",
+  heroImage: "/src/assets/images/hero_glass_villa_1789818580678.jpg",
   label: "Service Commercial",
   phoneNumbers: [
     {
       raw: "0652274793",
-      formatted: "0652 27 47 93",
-      label: "Ligne Commerciale 01",
-      role: "Devis, commandes & conseils techniques",
-      badge: "Mobile & WhatsApp",
+      formatted: "0652274793",
+      label: "Ligne 1",
+      role: "Service Commercial & Devis",
+      badge: "Appel & WhatsApp",
       telUrl: "tel:0652274793",
       whatsappUrl: "https://wa.me/213652274793"
     },
     {
       raw: "0652274792",
-      formatted: "0652 27 47 92",
-      label: "Ligne Commerciale 02",
-      role: "Service commercial & suivi de fabrication",
-      badge: "Mobile & WhatsApp",
+      formatted: "0652274792",
+      label: "Ligne 2",
+      role: "Service Commercial & Suivi",
+      badge: "Appel & WhatsApp",
       telUrl: "tel:0652274792",
       whatsappUrl: "https://wa.me/213652274792"
     },
     {
       raw: "0540864281",
-      formatted: "0540 86 42 81",
-      label: "Ligne Fixe / Bureau",
-      role: "Secrétariat, accueil & renseignements",
+      formatted: "0540864281",
+      label: "Ligne 3",
+      role: "Direction & Accueil",
       badge: "Ligne Directe",
       telUrl: "tel:0540864281",
       whatsappUrl: "https://wa.me/213540864281"
     }
   ] as PhoneNumberInfo[],
   locationUrl: "https://share.google/PXDtOBb3sY0gNgYK6",
-  facebookUrl: "https://www.facebook.com/share/1cffF2PHoX/?mibextid=wwXIfr"
+  facebookUrl: "https://www.facebook.com/share/1cffF2PHoX/?mibextid=wwXIfr",
+  websiteUrl: "https://rzglass.dz"
 };

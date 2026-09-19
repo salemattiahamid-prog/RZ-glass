@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
 import { 
   Phone, 
-  MapPin, 
-  Facebook, 
+  ChevronRight, 
+  Globe, 
+  Menu, 
+  X, 
   Copy, 
   Check, 
   MessageSquare, 
-  ExternalLink, 
-  Layers, 
-  ChevronRight, 
-  X, 
+  ArrowRight,
   CheckCircle2,
-  Smartphone,
-  AppWindow,
+  MapPin,
+  ExternalLink,
   Shield,
-  Bath,
-  Award,
-  ShieldCheck,
   Clock,
-  Handshake,
-  ArrowRight
+  Sparkles
 } from 'lucide-react';
 import { 
   SERVICES_LIST, 
@@ -27,10 +22,14 @@ import {
   GlassService, 
   PhoneNumberInfo 
 } from './data/companyData';
+import { RZLogo } from './components/RZLogo';
+import { ServiceCardBadge } from './components/ServiceCardBadge';
+import { FacebookBadge, GoogleMapsPin } from './components/SocialIcons';
 
 export default function App() {
   const [activePhoneContact, setActivePhoneContact] = useState<PhoneNumberInfo | null>(null);
   const [selectedService, setSelectedService] = useState<GlassService | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [copiedNotification, setCopiedNotification] = useState<string | null>(null);
 
   const handleCopyNumber = (text: string, label: string, e?: React.MouseEvent) => {
@@ -40,7 +39,7 @@ export default function App() {
     }
     navigator.clipboard.writeText(text);
     setCopiedNotification(label);
-    setTimeout(() => setCopiedNotification(null), 2400);
+    setTimeout(() => setCopiedNotification(null), 2200);
   };
 
   const openContactChoice = (phone: PhoneNumberInfo, e?: React.MouseEvent) => {
@@ -50,33 +49,17 @@ export default function App() {
     setActivePhoneContact(phone);
   };
 
-  const renderServiceIcon = (type: GlassService['iconType'], size: 'md' | 'lg' = 'md') => {
-    const iconClass = size === 'lg' ? "w-7 h-7" : "w-5 h-5";
-    switch (type) {
-      case 'smartphone':
-        return <Smartphone className={`${iconClass} text-sky-400 stroke-[2]`} />;
-      case 'layers':
-        return <Layers className={`${iconClass} text-sky-400 stroke-[2]`} />;
-      case 'window':
-        return <AppWindow className={`${iconClass} text-sky-400 stroke-[2]`} />;
-      case 'shield':
-        return <Shield className={`${iconClass} text-sky-400 stroke-[2]`} />;
-      case 'shower':
-        return <Bath className={`${iconClass} text-sky-400 stroke-[2]`} />;
-      default:
-        return <Layers className={`${iconClass} text-sky-400 stroke-[2]`} />;
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-[#070e1b] text-slate-100 antialiased font-sans selection:bg-sky-500/30 selection:text-sky-200 relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#020b18] text-slate-100 antialiased font-sans selection:bg-sky-500/30 selection:text-sky-200 relative overflow-x-hidden flex justify-center">
       
-      {/* Background Ambience: Subtle Geometric Lighting (No Photos) */}
+      {/* Background Ambience: Subtle Geometric Glows */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[650px] h-[450px] bg-gradient-to-b from-sky-500/10 via-blue-600/5 to-transparent rounded-full blur-3xl" />
-        <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[550px] h-[350px] bg-gradient-to-t from-cyan-600/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-b from-sky-500/10 via-blue-700/5 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-t from-cyan-600/10 via-blue-900/10 to-transparent rounded-full blur-3xl" />
+        
+        {/* Subtle grid pattern */}
         <div 
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage: `linear-gradient(to right, #38bdf8 1px, transparent 1px), linear-gradient(to bottom, #38bdf8 1px, transparent 1px)`,
             backgroundSize: '40px 40px'
@@ -86,336 +69,277 @@ export default function App() {
 
       {/* Floating Toast Notification */}
       {copiedNotification && (
-        <div className="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white border border-sky-400/40 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full shadow-[0_8px_25px_rgba(0,163,255,0.3)] backdrop-blur-md flex items-center gap-2.5 animate-in fade-in slide-in-from-top-3 duration-200">
-          <div className="w-4 h-4 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center">
+        <div className="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-[#061428]/95 text-white border border-cyan-400/50 text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-full shadow-[0_8px_25px_rgba(0,180,255,0.4)] backdrop-blur-md flex items-center gap-2.5 animate-in fade-in slide-in-from-top-3 duration-200">
+          <div className="w-4 h-4 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
             <Check className="w-3 h-3 stroke-[3]" />
           </div>
           <span>{copiedNotification} copié !</span>
         </div>
       )}
 
-      {/* Main Corporate Container */}
-      <div className="relative z-10 max-w-xl mx-auto px-4 py-8 sm:py-12 flex flex-col justify-between min-h-screen">
+      {/* Main Single-Screen Mobile/Tablet/Desktop Container */}
+      <div className="relative z-10 w-full max-w-[460px] sm:max-w-[490px] md:max-w-[530px] min-h-screen flex flex-col justify-between shadow-[0_0_50px_rgba(0,0,0,0.8)] border-x border-sky-950/40 bg-[#020b18]">
         
-        <div className="space-y-7">
+        <div>
           
           {/* ========================================================================= */}
-          {/* 1. CORPORATE HEADER                                                       */}
+          {/* 1. HERO SECTION: Architectural Glass Villa + RZ Glass Logo + Menu          */}
           {/* ========================================================================= */}
-          <header className="text-center pt-2">
+          <div className="relative w-full aspect-[4/3.3] sm:aspect-[4/3] overflow-hidden">
             
-            {/* Live Availability Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-sky-500/25 text-sky-300 text-[11px] sm:text-xs font-semibold tracking-wide shadow-sm mb-4">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Service commercial disponible • Devis & Conseils</span>
-            </div>
+            {/* Real Architectural Glass Villa Image */}
+            <img 
+              src={COMMERCIAL_CONTACT.heroImage} 
+              alt="RZ Glass Architecture Villa" 
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover object-center scale-[1.02]" 
+            />
 
-            {/* Architectural Glass Emblem (Pure Vector SVG, No Images) */}
-            <div className="flex justify-center mb-3">
-              <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-950 p-[1.5px] border border-sky-400/35 shadow-[0_4px_30px_rgba(14,165,233,0.25)]">
-                <div className="w-full h-full rounded-[14px] bg-[#09152b] flex items-center justify-center overflow-hidden relative">
-                  <div className="absolute -top-6 -right-6 w-14 h-14 bg-sky-400/25 rounded-full blur-md" />
-                  
-                  {/* Modern 3D Window SVG */}
-                  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 sm:w-12 sm:h-12">
-                    <rect x="15" y="15" width="70" height="70" rx="6" stroke="#00A3FF" strokeWidth="4" fill="#081b38" />
-                    <path d="M22 22L47 26V74L22 78V22Z" fill="#0284c7" fillOpacity="0.8" stroke="#38bdf8" strokeWidth="2" />
-                    <path d="M53 26L78 22V78L53 74V26Z" fill="#0369a1" fillOpacity="0.8" stroke="#38bdf8" strokeWidth="2" />
-                    <line x1="28" y1="28" x2="41" y2="71" stroke="white" strokeWidth="1.5" strokeOpacity="0.7" strokeLinecap="round" />
-                  </svg>
-                </div>
+            {/* Dark Gradient Overlays for high-contrast readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#020b18]/85 via-transparent to-[#020b18] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#020b18] via-[#020b18]/50 to-transparent pointer-events-none" />
+
+            {/* Top Bar: Official RZ Glass Logo (from X2.png) */}
+            <header className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between">
+              <RZLogo className="h-8 sm:h-9" variant="badge" />
+            </header>
+
+            {/* Bottom-Left Hero Typography */}
+            <div className="absolute bottom-3 left-4 right-4 z-20 text-left">
+              <span className="text-xs sm:text-sm font-bold tracking-[0.2em] text-sky-200/90 uppercase leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] block">
+                LE VERRE,
+              </span>
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight uppercase leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] mt-0.5">
+                <span className="text-white">NOTRE </span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-300 to-sky-300 drop-shadow-[0_0_12px_rgba(56,189,248,0.5)]">
+                  SPÉCIALITÉ
+                </span>
+              </h1>
+
+              {/* Tagline: Qualité • Sécurité • Durabilité */}
+              <div className="flex items-center gap-2 mt-1.5 text-xs sm:text-[13px] font-semibold text-slate-200 tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                <span>Qualité</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#00e5ff]" />
+                <span>Sécurité</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#00e5ff]" />
+                <span>Durabilité</span>
               </div>
             </div>
 
-            {/* Brand Title */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white uppercase leading-none">
-              VITRERIE
-            </h1>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-300 to-blue-400 uppercase mt-0.5">
-              VERRE & ALUMINIUM
+          </div>
+
+
+          {/* ========================================================================= */}
+          {/* 2. ACTION BUTTONS: Facebook, Maps, Website                                */}
+          {/* ========================================================================= */}
+          <div className="px-3.5 sm:px-4 pt-3.5 pb-2 space-y-2.5">
+            
+            {/* ROW 1: Facebook & Google Maps */}
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+              
+              {/* Facebook Button */}
+              <a
+                id="facebook-btn"
+                href={COMMERCIAL_CONTACT.facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-2.5 sm:p-3 rounded-2xl bg-[#041122]/90 border border-cyan-500/50 hover:border-cyan-300 shadow-[0_0_14px_rgba(0,180,255,0.18)] hover:shadow-[0_0_20px_rgba(0,180,255,0.3)] transition-all duration-200 flex items-center justify-between active:scale-[0.98]"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <FacebookBadge className="w-8 h-8 sm:w-9 sm:h-9" />
+                  <div className="text-left leading-tight">
+                    <span className="block text-[11px] sm:text-xs font-bold text-white group-hover:text-cyan-200 transition-colors">
+                      Notre page
+                    </span>
+                    <span className="block text-[11px] sm:text-xs font-bold text-white group-hover:text-cyan-200 transition-colors">
+                      Facebook
+                    </span>
+                  </div>
+                </div>
+
+                <ChevronRight className="w-4 h-4 text-cyan-300 stroke-[2.5] group-hover:translate-x-1 transition-transform shrink-0" />
+              </a>
+
+              {/* Google Maps / Localisation Button */}
+              <a
+                id="maps-btn"
+                href={COMMERCIAL_CONTACT.locationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-2.5 sm:p-3 rounded-2xl bg-[#041122]/90 border border-cyan-500/50 hover:border-cyan-300 shadow-[0_0_14px_rgba(0,180,255,0.18)] hover:shadow-[0_0_20px_rgba(0,180,255,0.3)] transition-all duration-200 flex items-center justify-between active:scale-[0.98]"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <GoogleMapsPin className="w-8 h-8 sm:w-9 sm:h-9" />
+                  <div className="text-left leading-tight">
+                    <span className="block text-[11px] sm:text-xs font-bold text-white group-hover:text-cyan-200 transition-colors">
+                      Notre
+                    </span>
+                    <span className="block text-[11px] sm:text-xs font-bold text-white group-hover:text-cyan-200 transition-colors">
+                      localisation
+                    </span>
+                  </div>
+                </div>
+
+                <ChevronRight className="w-4 h-4 text-cyan-300 stroke-[2.5] group-hover:translate-x-1 transition-transform shrink-0" />
+              </a>
+
+            </div>
+
+            {/* ROW 2: Full-Width Website Button */}
+            <button
+              id="website-btn"
+              onClick={() => setIsMenuOpen(true)}
+              className="w-full py-3 px-4 rounded-2xl bg-[#041122]/90 border border-cyan-500/50 hover:border-cyan-300 shadow-[0_0_14px_rgba(0,180,255,0.18)] hover:shadow-[0_0_20px_rgba(0,180,255,0.3)] transition-all duration-200 flex items-center justify-between active:scale-[0.98] cursor-pointer group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-cyan-500/15 border border-cyan-400/40 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all shrink-0">
+                  <Globe className="w-4.5 h-4.5 stroke-[2.3]" />
+                </div>
+                <span className="text-xs sm:text-sm font-bold text-white tracking-wide group-hover:text-cyan-200 transition-colors">
+                  Notre site web
+                </span>
+              </div>
+
+              <ChevronRight className="w-4 h-4 text-cyan-300 stroke-[2.5] group-hover:translate-x-1 transition-transform" />
+            </button>
+
+          </div>
+
+
+          {/* ========================================================================= */}
+          {/* 3. SECTION DIVIDER: —— NOS SERVICES ——                                    */}
+          {/* ========================================================================= */}
+          <div className="flex items-center justify-center gap-3 my-5 px-4">
+            <div className="h-[2px] w-12 sm:w-16 bg-gradient-to-r from-transparent to-cyan-400 shadow-[0_0_8px_#00e5ff]" />
+            <h2 className="text-xl sm:text-2xl font-black uppercase tracking-wider flex items-center gap-2 select-none">
+              <span className="text-white drop-shadow-md">NOS</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-sky-300 drop-shadow-[0_0_15px_rgba(0,229,255,0.7)] font-black">
+                SERVICES
+              </span>
             </h2>
-
-            {/* Catchphrase */}
-            <p className="font-script text-sky-200/90 text-lg sm:text-xl tracking-wide mt-1.5">
-              « Le verre, notre spécialité »
-            </p>
-
-            <div className="flex items-center justify-center gap-2 mt-2 text-[11px] text-slate-400 font-medium uppercase tracking-wider">
-              <span>Transformation</span>
-              <span className="w-1 h-1 rounded-full bg-sky-400" />
-              <span>Vitrages isolants</span>
-              <span className="w-1 h-1 rounded-full bg-sky-400" />
-              <span>Accessoires</span>
-            </div>
-          </header>
+            <div className="h-[2px] w-12 sm:w-16 bg-gradient-to-l from-transparent to-cyan-400 shadow-[0_0_8px_#00e5ff]" />
+          </div>
 
 
           {/* ========================================================================= */}
-          {/* 2. PHONE LINES SECTION: Click opens choice (Phone vs WhatsApp)            */}
+          {/* 4. THE 5 SERVICES CARDS: Exact Reference Layout (3 Top + 2 Bottom)        */}
           {/* ========================================================================= */}
-          <section className="space-y-2.5">
+          <div className="space-y-3 px-3.5 sm:px-4">
             
-            <div className="flex items-center justify-between px-1">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-sky-400" />
-                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-200">
-                  Lignes Téléphoniques Directes
-                </h3>
-              </div>
-              <span className="text-[11px] text-sky-400 font-medium">
-                Appel ou WhatsApp
-              </span>
-            </div>
-
-            {/* The 3 Phone Line Cards */}
-            <div className="space-y-2.5">
-              {COMMERCIAL_CONTACT.phoneNumbers.map((phone) => (
-                <div
-                  key={phone.raw}
-                  onClick={() => openContactChoice(phone)}
-                  className="group relative rounded-2xl p-4 sm:p-4.5 bg-gradient-to-r from-[#0e1c33] via-[#0b172a] to-[#0f203a] border border-slate-700/70 hover:border-sky-400/80 shadow-md hover:shadow-[0_4px_25px_rgba(14,165,233,0.2)] transition-all duration-300 cursor-pointer flex items-center justify-between gap-3 active:scale-[0.99]"
-                >
-                  {/* Left: Phone Icon Box */}
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500/20 to-blue-600/20 border border-sky-400/30 flex items-center justify-center text-sky-400 shrink-0 group-hover:scale-105 group-hover:border-sky-400 group-hover:text-sky-300 transition-all">
-                    <Phone className="w-6 h-6 stroke-[2.2]" />
-                  </div>
-
-                  {/* Middle: Details & Number */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-sky-400">
-                        {phone.label}
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white/5 border border-white/10 text-slate-300">
-                        {phone.badge}
-                      </span>
-                    </div>
-
-                    <div className="text-base sm:text-lg font-bold font-mono text-white tracking-wide group-hover:text-sky-200 transition-colors">
-                      {phone.formatted}
-                    </div>
-
-                    <p className="text-[11px] text-slate-400 truncate mt-0.5">
-                      {phone.role}
-                    </p>
-                  </div>
-
-                  {/* Right: Quick Copy + Arrow */}
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    <button
-                      onClick={(e) => handleCopyNumber(phone.raw, phone.label, e)}
-                      className="p-2 rounded-xl bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white border border-white/5 transition-colors"
-                      title="Copier le numéro"
-                    >
-                      <Copy className="w-4 h-4" />
-                    </button>
-
-                    <div className="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-slate-950 transition-colors">
-                      <ChevronRight className="w-4 h-4" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-center text-[11px] text-slate-400 pt-1">
-              Cliquez sur un numéro pour choisir entre un <strong className="text-slate-200">Appel direct</strong> ou <strong className="text-slate-200">WhatsApp</strong>.
-            </p>
-
-          </section>
-
-
-          {/* ========================================================================= */}
-          {/* 3. CANAUX OFFICIELS: Maps & Facebook                                      */}
-          {/* ========================================================================= */}
-          <section className="grid grid-cols-2 gap-3">
-
-            {/* Google Maps / Localisation */}
-            <a
-              href={COMMERCIAL_CONTACT.locationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group rounded-2xl p-3.5 sm:p-4 bg-[#0a1322] border border-slate-700/60 hover:border-rose-500/60 transition-all duration-300 shadow-md flex items-center gap-3 active:scale-[0.99]"
-            >
-              <div className="w-10 h-10 rounded-xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0 group-hover:scale-105 transition-all">
-                <MapPin className="w-5 h-5 stroke-[2.2]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <span className="text-[10px] font-bold tracking-wider text-rose-400 uppercase block">
-                  Atelier
-                </span>
-                <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-rose-200 transition-colors truncate">
-                  Google Maps
-                </h4>
-                <span className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
-                  <span>Itinéraire GPS</span>
-                  <ExternalLink className="w-2.5 h-2.5 text-slate-500" />
-                </span>
-              </div>
-            </a>
-
-            {/* Facebook Page */}
-            <a
-              href={COMMERCIAL_CONTACT.facebookUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group rounded-2xl p-3.5 sm:p-4 bg-[#0a1322] border border-slate-700/60 hover:border-blue-500/60 transition-all duration-300 shadow-md flex items-center gap-3 active:scale-[0.99]"
-            >
-              <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0 group-hover:scale-105 transition-all">
-                <Facebook className="w-5 h-5 stroke-[2.2]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <span className="text-[10px] font-bold tracking-wider text-blue-400 uppercase block">
-                  Page Officielle
-                </span>
-                <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-blue-200 transition-colors truncate">
-                  Facebook Page
-                </h4>
-                <span className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
-                  <span>Réalisations</span>
-                  <ExternalLink className="w-2.5 h-2.5 text-slate-500" />
-                </span>
-              </div>
-            </a>
-
-          </section>
-
-
-          {/* ========================================================================= */}
-          {/* 4. NOS 5 PRESTATIONS (Pure Technical Vector Cards - Zero Photos)          */}
-          {/* ========================================================================= */}
-          <section className="space-y-3 pt-1">
-            
-            <div className="flex items-center justify-between px-1">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-cyan-400" />
-                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-200">
-                  Nos 5 Prestations & Savoir-Faire
-                </h3>
-              </div>
-              <span className="text-[11px] text-slate-400">
-                Spécifications & Devis
-              </span>
-            </div>
-
-            {/* The 5 Prestations List */}
-            <div className="space-y-2.5">
-              {SERVICES_LIST.map((service) => (
+            {/* ROW 1: 3 Cards (Vente d'accessoires, Transformation verre plat, Double vitrage) */}
+            <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+              {SERVICES_LIST.slice(0, 3).map((service) => (
                 <div
                   key={service.id}
+                  id={`service-card-${service.id}`}
                   onClick={() => setSelectedService(service)}
-                  className="group rounded-2xl bg-[#091324] border border-slate-700/60 hover:border-sky-400/60 p-4 transition-all duration-300 cursor-pointer shadow-md hover:shadow-[0_4px_25px_rgba(14,165,233,0.15)] flex items-center justify-between gap-3.5"
+                  className="group rounded-2xl bg-[#030e1d] border border-cyan-500/40 hover:border-cyan-300 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:shadow-[0_4px_25px_rgba(0,180,255,0.25)] transition-all duration-300 flex flex-col justify-between cursor-pointer active:scale-[0.98]"
                 >
-                  {/* Left: Vector Icon Box + Number */}
-                  <div className="flex items-center gap-3 shrink-0">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500/15 to-blue-600/10 border border-sky-400/25 flex items-center justify-center text-sky-400 group-hover:scale-105 group-hover:border-sky-400/50 transition-all">
-                      {renderServiceIcon(service.iconType)}
-                    </div>
+                  {/* Service Photo with Aspect Ratio */}
+                  <div className="relative w-full aspect-[4/3] overflow-hidden bg-slate-950">
+                    <img 
+                      src={service.imageSrc} 
+                      alt={service.title} 
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#030e1d] via-transparent to-transparent opacity-70" />
                   </div>
 
-                  {/* Middle: Service Title & Category */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-[10px] font-mono font-bold text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded border border-sky-400/20">
-                        #{service.number}
-                      </span>
-                      <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider truncate">
-                        {service.category}
-                      </span>
-                    </div>
+                  {/* Overlapping Royal Blue Round Badge */}
+                  <div className="relative -mt-5 ml-2.5 z-10">
+                    <ServiceCardBadge iconType={service.iconType} className="w-10 h-10 sm:w-11 sm:h-11" />
+                  </div>
 
-                    <h4 className="font-bold text-xs sm:text-sm text-white group-hover:text-sky-300 transition-colors line-clamp-1">
+                  {/* Card Content: Title & Cyan Underline */}
+                  <div className="p-2.5 pt-1.5 flex flex-col flex-1 justify-between text-left">
+                    <h3 className="text-[11px] sm:text-xs font-bold text-white leading-snug group-hover:text-cyan-200 transition-colors line-clamp-3 min-h-[44px]">
                       {service.title}
-                    </h4>
-
-                    <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5 leading-normal">
-                      {service.description}
-                    </p>
-                  </div>
-
-                  {/* Right: Technical Details Arrow */}
-                  <div className="flex items-center gap-1 text-sky-400 shrink-0">
-                    <span className="text-[11px] font-semibold hidden sm:inline group-hover:underline">
-                      Détails
-                    </span>
-                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </h3>
+                    
+                    {/* Small Cyan Indicator Bar */}
+                    <div className="w-7 h-[3px] bg-cyan-400 rounded-full mt-2 shadow-[0_0_8px_#00e5ff]" />
                   </div>
                 </div>
               ))}
             </div>
 
-          </section>
+            {/* ROW 2: 2 Cards (Verre feuilleté, Façonnage vitrines et cabines de douches) */}
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+              {SERVICES_LIST.slice(3, 5).map((service) => (
+                <div
+                  key={service.id}
+                  id={`service-card-${service.id}`}
+                  onClick={() => setSelectedService(service)}
+                  className="group rounded-2xl bg-[#030e1d] border border-cyan-500/40 hover:border-cyan-300 overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:shadow-[0_4px_25px_rgba(0,180,255,0.25)] transition-all duration-300 flex flex-col justify-between cursor-pointer active:scale-[0.98]"
+                >
+                  {/* Service Photo with Aspect Ratio */}
+                  <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-950">
+                    <img 
+                      src={service.imageSrc} 
+                      alt={service.title} 
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#030e1d] via-transparent to-transparent opacity-70" />
+                  </div>
 
+                  {/* Overlapping Royal Blue Round Badge */}
+                  <div className="relative -mt-5 ml-2.5 z-10">
+                    <ServiceCardBadge iconType={service.iconType} className="w-10 h-10 sm:w-11 sm:h-11" />
+                  </div>
 
-          {/* ========================================================================= */}
-          {/* 5. QUALITY GUARANTEES & ENGAGEMENTS                                       */}
-          {/* ========================================================================= */}
-          <section className="bg-slate-900/60 border border-slate-700/50 rounded-2xl p-4 sm:p-5 backdrop-blur-sm">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-              
-              <div className="flex flex-col items-center gap-1.5 p-1">
-                <div className="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center">
-                  <Award className="w-4 h-4" />
+                  {/* Card Content: Title & Cyan Underline */}
+                  <div className="p-2.5 pt-1.5 flex flex-col flex-1 justify-between text-left">
+                    <h3 className="text-xs font-bold text-white leading-snug group-hover:text-cyan-200 transition-colors line-clamp-2 min-h-[34px]">
+                      {service.title}
+                    </h3>
+                    
+                    {/* Small Cyan Indicator Bar */}
+                    <div className="w-7 h-[3px] bg-cyan-400 rounded-full mt-2 shadow-[0_0_8px_#00e5ff]" />
+                  </div>
                 </div>
-                <span className="text-xs font-bold text-slate-200">
-                  Produits de qualité
-                </span>
-                <span className="text-[10px] text-slate-400">
-                  Normes certifiées
-                </span>
-              </div>
-
-              <div className="flex flex-col items-center gap-1.5 p-1 border-l border-white/5">
-                <div className="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-bold text-slate-200">
-                  Travail soigné
-                </span>
-                <span className="text-[10px] text-slate-400">
-                  Finition de précision
-                </span>
-              </div>
-
-              <div className="flex flex-col items-center gap-1.5 p-1 sm:border-l border-white/5">
-                <div className="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center">
-                  <Clock className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-bold text-slate-200">
-                  Respect des délais
-                </span>
-                <span className="text-[10px] text-slate-400">
-                  Livraison ponctuelle
-                </span>
-              </div>
-
-              <div className="flex flex-col items-center gap-1.5 p-1 border-l border-white/5">
-                <div className="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center">
-                  <Handshake className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-bold text-slate-200">
-                  Votre satisfaction
-                </span>
-                <span className="text-[10px] text-slate-400">
-                  Notre priorité
-                </span>
-              </div>
-
+              ))}
             </div>
-          </section>
+
+          </div>
 
         </div>
 
 
         {/* ========================================================================= */}
-        {/* FOOTER                                                                    */}
+        {/* 5. FOOTER: Divider with 3D Glass Icon + Cursive Slogan                    */}
         {/* ========================================================================= */}
-        <footer className="text-center pt-8 pb-4 border-t border-slate-800/80 mt-8">
-          <p className="font-script text-slate-300 text-lg sm:text-xl tracking-wide">
-            Le verre, notre spécialité
+        <footer className="relative mt-8 pt-4 pb-6 px-4 text-center overflow-hidden">
+          
+          {/* Subtle Bottom Sapphire Refractions */}
+          <div className="absolute bottom-0 left-0 w-32 h-20 bg-gradient-to-tr from-sky-600/20 to-transparent pointer-events-none blur-xl" />
+          <div className="absolute bottom-0 right-0 w-32 h-20 bg-gradient-to-tl from-cyan-500/20 to-transparent pointer-events-none blur-xl" />
+
+          {/* Central Glass Divider */}
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-cyan-500/50 to-cyan-400/70" />
+            
+            {/* 3D Glass Sheet Emblem in center */}
+            <div className="w-6 h-6 shrink-0 flex items-center justify-center">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]">
+                <polygon points="15,30 40,15 50,75 25,90" fill="#0284c7" stroke="#38bdf8" strokeWidth="3" />
+                <polygon points="35,20 60,5 70,65 45,80" fill="#38bdf8" stroke="#ffffff" strokeWidth="2.5" />
+              </svg>
+            </div>
+
+            <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-cyan-500/50 to-cyan-400/70" />
+          </div>
+
+          {/* Cursive Handwriting Slogan: La transparence en toute confiance */}
+          <p className="font-calligraphy text-2xl sm:text-3xl text-slate-100 tracking-wide leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+            La transparence
+            <br />
+            en toute confiance
           </p>
-          <p className="text-[11px] text-slate-500 font-medium mt-1">
-            Solutions Vitrerie, Verre Plat & Aluminium — Tous droits réservés
+
+          <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mt-3">
+            RZ Glass • Tous droits réservés
           </p>
         </footer>
 
@@ -423,31 +347,32 @@ export default function App() {
 
 
       {/* ========================================================================= */}
-      {/* DIALOG: CONTACT MODE SELECTION (Phone Call vs. WhatsApp vs. Copy)         */}
+      {/* DIALOG: PHONE ACTIONS MODAL (Appel, WhatsApp, Copier)                     */}
       {/* ========================================================================= */}
       {activePhoneContact && (
         <div 
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
           onClick={() => setActivePhoneContact(null)}
         >
           <div 
-            className="bg-[#0b1527] border border-sky-500/30 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-[0_10px_50px_rgba(0,163,255,0.25)] animate-in zoom-in-95 duration-200 text-white relative"
+            className="bg-[#08152a] border border-cyan-400/50 rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-[0_0_50px_rgba(0,180,255,0.3)] animate-in zoom-in-95 duration-200 text-white relative"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
+              id="close-contact-modal"
               onClick={() => setActivePhoneContact(null)}
-              className="absolute top-4 right-4 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
 
             {/* Dialog Header */}
-            <div className="text-center pb-5 border-b border-white/10">
-              <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-sky-500/15 border border-sky-400/30 text-sky-300 uppercase inline-block mb-2">
+            <div className="text-center pb-4 border-b border-white/10">
+              <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 uppercase inline-block mb-2">
                 {activePhoneContact.label}
               </span>
-              <h3 className="text-xl sm:text-2xl font-bold font-mono tracking-wider text-white">
+              <h3 className="text-2xl font-bold font-mono tracking-wider text-white">
                 {activePhoneContact.formatted}
               </h3>
               <p className="text-xs text-slate-400 mt-1">
@@ -455,17 +380,18 @@ export default function App() {
               </p>
             </div>
 
-            {/* Contact Options */}
-            <div className="py-5 space-y-3">
+            {/* Actions List */}
+            <div className="py-4 space-y-3">
               
               {/* Option 1: Direct Phone Call */}
               <a
+                id="modal-direct-call"
                 href={activePhoneContact.telUrl}
-                className="group w-full p-4 rounded-2xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white flex items-center justify-between shadow-lg shadow-sky-600/25 transition-all duration-200 active:scale-[0.98]"
+                className="group w-full p-3.5 rounded-2xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white flex items-center justify-between shadow-lg shadow-sky-600/30 transition-all active:scale-[0.98]"
               >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center">
-                    <Phone className="w-5 h-5 stroke-[2.5]" />
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white">
+                    <Phone className="w-5 h-5 fill-white stroke-[2.2]" />
                   </div>
                   <div className="text-left">
                     <div className="font-bold text-sm">
@@ -476,36 +402,38 @@ export default function App() {
                     </div>
                   </div>
                 </div>
-                <ArrowRight className="w-5 h-5 text-white/80 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 text-white/90 group-hover:translate-x-1 transition-transform" />
               </a>
 
-              {/* Option 2: WhatsApp Chat */}
+              {/* Option 2: WhatsApp */}
               <a
+                id="modal-whatsapp"
                 href={activePhoneContact.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group w-full p-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white flex items-center justify-between shadow-lg shadow-emerald-600/25 transition-all duration-200 active:scale-[0.98]"
+                className="group w-full p-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white flex items-center justify-between shadow-lg shadow-emerald-600/30 transition-all active:scale-[0.98]"
               >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 stroke-[2.5]" />
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white">
+                    <MessageSquare className="w-5 h-5 fill-white stroke-[2.2]" />
                   </div>
                   <div className="text-left">
                     <div className="font-bold text-sm">
                       Message WhatsApp
                     </div>
                     <div className="text-[11px] text-emerald-100/80">
-                      Discuter, envoyer photos ou plans
+                      Envoyer plans, photos ou devis
                     </div>
                   </div>
                 </div>
-                <ArrowRight className="w-5 h-5 text-white/80 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 text-white/90 group-hover:translate-x-1 transition-transform" />
               </a>
 
-              {/* Option 3: Copy Number */}
+              {/* Option 3: Copy */}
               <button
+                id="modal-copy"
                 onClick={() => handleCopyNumber(activePhoneContact.raw, activePhoneContact.label)}
-                className="w-full p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white flex items-center justify-center gap-2 text-xs font-semibold transition-colors"
+                className="w-full p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white flex items-center justify-center gap-2 text-xs font-semibold transition-colors cursor-pointer"
               >
                 <Copy className="w-3.5 h-3.5" />
                 <span>Copier le numéro ({activePhoneContact.raw})</span>
@@ -513,11 +441,10 @@ export default function App() {
 
             </div>
 
-            {/* Dialog Footer */}
             <div className="text-center pt-1">
               <button
                 onClick={() => setActivePhoneContact(null)}
-                className="text-xs text-slate-400 hover:text-slate-200 transition-colors"
+                className="text-xs text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
               >
                 Fermer
               </button>
@@ -528,42 +455,44 @@ export default function App() {
 
 
       {/* ========================================================================= */}
-      {/* DIALOG: SERVICE DETAIL MODAL (Clean Vector Header - Zero Photos)          */}
+      {/* DIALOG: SERVICE DETAILS MODAL (Exact Specifications & Quote Request)      */}
       {/* ========================================================================= */}
       {selectedService && (
         <div 
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
           onClick={() => setSelectedService(null)}
         >
           <div 
-            className="bg-[#0b1527] border border-sky-400/40 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 text-white relative flex flex-col max-h-[90vh]"
+            className="bg-[#08152a] border border-cyan-400/50 rounded-3xl max-w-lg w-full overflow-hidden shadow-[0_0_50px_rgba(0,180,255,0.35)] animate-in zoom-in-95 duration-200 text-white relative flex flex-col max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header with Technical Vector Badge (Zero Photos) */}
-            <div className="p-6 border-b border-white/10 bg-gradient-to-br from-[#0e1d35] to-[#09152b] relative">
+            {/* Modal Image Header */}
+            <div className="relative w-full h-48 overflow-hidden bg-slate-950">
+              <img 
+                src={selectedService.imageSrc} 
+                alt={selectedService.title} 
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#08152a] via-[#08152a]/40 to-transparent" />
+
+              {/* Close Button */}
               <button
+                id="close-service-modal"
                 onClick={() => setSelectedService(null)}
-                className="absolute top-4 right-4 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-xl bg-black/50 hover:bg-black/70 text-white transition-colors cursor-pointer z-10"
               >
                 <X className="w-4 h-4" />
               </button>
 
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500/20 to-blue-600/20 border border-sky-400/40 flex items-center justify-center text-sky-400 shrink-0">
-                  {renderServiceIcon(selectedService.iconType, 'lg')}
-                </div>
-
+              {/* Badges on bottom of header */}
+              <div className="absolute bottom-3 left-4 right-4 flex items-center gap-3">
+                <ServiceCardBadge iconType={selectedService.iconType} className="w-12 h-12 shrink-0" />
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30">
-                      Prestation #{selectedService.number}
-                    </span>
-                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-                      {selectedService.category}
-                    </span>
-                  </div>
-
-                  <h3 className="text-base sm:text-lg font-bold text-white leading-snug">
+                  <span className="text-[10px] font-mono font-bold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded border border-cyan-400/30 uppercase">
+                    Service #{selectedService.number}
+                  </span>
+                  <h3 className="text-base sm:text-lg font-bold text-white leading-tight mt-1">
                     {selectedService.title}
                   </h3>
                 </div>
@@ -571,46 +500,141 @@ export default function App() {
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 overflow-y-auto space-y-5">
+            <div className="p-5 overflow-y-auto space-y-4">
               <div>
-                <h5 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                <h4 className="text-[11px] font-bold uppercase tracking-wider text-cyan-400 mb-1">
                   Description technique
-                </h5>
+                </h4>
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
                   {selectedService.description}
                 </p>
               </div>
 
               <div>
-                <h5 className="text-[11px] font-bold uppercase tracking-wider text-sky-400 mb-2.5">
-                  Points forts & Spécifications
-                </h5>
+                <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
+                  Spécifications & Avantages
+                </h4>
                 <div className="space-y-2">
                   {selectedService.keyPoints.map((point, idx) => (
                     <div key={idx} className="flex items-start gap-2.5 text-xs text-slate-200">
-                      <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
                       <span>{point}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Bottom Action: Demander un Devis */}
-              <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              {/* Quote CTA Button */}
+              <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-3">
                 <span className="text-xs text-slate-400">
-                  Un projet ou une commande ?
+                  Besoin d'un devis rapide ?
                 </span>
-                <button
-                  onClick={() => {
-                    setSelectedService(null);
-                    openContactChoice(COMMERCIAL_CONTACT.phoneNumbers[0]);
-                  }}
-                  className="py-2.5 px-4 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-95 transition-all"
+                <a
+                  id="modal-request-quote"
+                  href={COMMERCIAL_CONTACT.phoneNumbers[0]?.whatsappUrl || COMMERCIAL_CONTACT.facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-400 hover:from-sky-400 hover:to-cyan-300 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer"
                 >
-                  <Phone className="w-3.5 h-3.5 fill-slate-950" />
+                  <MessageSquare className="w-3.5 h-3.5" />
                   <span>Demander un devis</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {/* ========================================================================= */}
+      {/* DIALOG: COMPANY OVERVIEW & WEB MODAL (Opened via "Notre site web")        */}
+      {/* ========================================================================= */}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <div 
+            className="w-full max-w-md bg-[#071427] border border-cyan-400/50 rounded-3xl p-5 sm:p-6 shadow-[0_0_50px_rgba(0,180,255,0.35)] flex flex-col justify-between overflow-y-auto animate-in zoom-in-95 duration-200 text-white relative max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div>
+              {/* Modal Top */}
+              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                <RZLogo className="h-8" variant="badge" />
+                <button
+                  id="close-drawer-btn"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
                 </button>
               </div>
+
+              {/* Company Info */}
+              <div className="py-4 space-y-3">
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                  <h4 className="text-xs font-bold text-cyan-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>À propos de RZ Glass</span>
+                  </h4>
+                  <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed">
+                    Spécialiste de la transformation du verre plat, double vitrage thermique, verre feuilleté sécurit et façonnage haut de gamme pour l'habitat et le commerce.
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                  <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Horaires d'ouverture</span>
+                  </h4>
+                  <p className="text-[11px] sm:text-xs text-slate-300">
+                    Samedi — Jeudi : 08h00 - 17h30
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5">
+                    Vendredi : Fermé (Urgences sur WhatsApp)
+                  </p>
+                </div>
+
+                {/* Quick Navigation Links */}
+                <div className="space-y-2.5 pt-1">
+                  <a
+                    href={COMMERCIAL_CONTACT.facebookUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full p-3 rounded-2xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-xs font-semibold flex items-center justify-between text-blue-200 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <FacebookBadge className="w-6 h-6" />
+                      <span>Page Facebook officielle</span>
+                    </div>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+
+                  <a
+                    href={COMMERCIAL_CONTACT.locationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full p-3 rounded-2xl bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/40 text-xs font-semibold flex items-center justify-between text-rose-200 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <MapPin className="w-4 h-4 text-rose-400" />
+                      <span>Itinéraire Google Maps</span>
+                    </div>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Bottom */}
+            <div className="pt-4 border-t border-white/10 text-center">
+              <p className="font-calligraphy text-2xl text-sky-200">
+                La transparence en toute confiance
+              </p>
+              <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-semibold">
+                RZ Glass • Safety Glass Technology
+              </p>
             </div>
           </div>
         </div>
