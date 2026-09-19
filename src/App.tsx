@@ -24,7 +24,7 @@ import {
 } from './data/companyData';
 import { RZLogo } from './components/RZLogo';
 import { ServiceCardBadge } from './components/ServiceCardBadge';
-import { FacebookBadge, GoogleMapsPin } from './components/SocialIcons';
+import { FacebookBadge, GoogleMapsPin, WhatsAppBadge } from './components/SocialIcons';
 
 export default function App() {
   const [activePhoneContact, setActivePhoneContact] = useState<PhoneNumberInfo | null>(null);
@@ -213,7 +213,102 @@ export default function App() {
 
 
           {/* ========================================================================= */}
-          {/* 3. SECTION DIVIDER: —— NOS SERVICES ——                                    */}
+          {/* 3. CONTACT COMMERCIAL: 3 LIGNES TÉLÉPHONIQUES (APPEL, WHATSAPP & COPIE)     */}
+          {/* ========================================================================= */}
+          <div className="px-3.5 sm:px-4 pt-1.5 pb-1">
+            <div className="rounded-2xl bg-[#041122]/95 border border-cyan-500/50 p-3 sm:p-3.5 shadow-[0_0_18px_rgba(0,180,255,0.18)] relative overflow-hidden">
+              
+              {/* Header: Service Commercial & Lignes directes */}
+              <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-cyan-500/20">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-xl bg-cyan-500/15 border border-cyan-400/40 flex items-center justify-center text-cyan-300">
+                    <Phone className="w-3.5 h-3.5 fill-cyan-400 stroke-none" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider text-white">
+                      Service Commercial
+                    </h3>
+                    <p className="text-[10px] text-cyan-200/70">
+                      Lignes directes pour devis & commandes
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[10px] font-semibold text-emerald-300">En ligne</span>
+                </div>
+              </div>
+
+              {/* 3 Phone Number Items */}
+              <div className="space-y-2">
+                {COMMERCIAL_CONTACT.phoneNumbers.map((phone) => (
+                  <div
+                    key={phone.raw}
+                    id={`phone-item-${phone.raw}`}
+                    className="p-2 sm:p-2.5 rounded-xl bg-[#020b18]/90 border border-cyan-500/30 hover:border-cyan-400/80 transition-all duration-200 flex items-center justify-between gap-2 group"
+                  >
+                    {/* Phone Number details & modal trigger */}
+                    <div 
+                      onClick={() => openContactChoice(phone)}
+                      className="cursor-pointer min-w-0 flex-1 text-left"
+                    >
+                      <div className="flex items-center flex-wrap gap-x-2 gap-y-0.5">
+                        <span className="text-sm sm:text-base font-bold font-mono tracking-wider text-white group-hover:text-cyan-300 transition-colors">
+                          {phone.formatted}
+                        </span>
+                        <span className="inline-flex items-center text-[10px] sm:text-[11px] font-bold text-cyan-300 bg-cyan-500/15 border border-cyan-400/40 px-2 py-0.5 rounded-md">
+                          Service Commercial
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Quick action buttons */}
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {/* Direct Phone Call */}
+                      <a
+                        id={`call-btn-${phone.raw}`}
+                        href={phone.telUrl}
+                        title={`Appeler ${phone.formatted}`}
+                        className="p-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white shadow-sm flex items-center justify-center active:scale-90 transition-all cursor-pointer"
+                      >
+                        <Phone className="w-3.5 h-3.5 fill-white stroke-none" />
+                      </a>
+
+                      {/* WhatsApp Button */}
+                      <a
+                        id={`whatsapp-btn-${phone.raw}`}
+                        href={phone.whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={`WhatsApp avec ${phone.formatted}`}
+                        className="p-2 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white shadow-sm flex items-center justify-center active:scale-90 transition-all cursor-pointer"
+                      >
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
+                          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.311.045-.698.055-1.135-.084-.285-.091-.65-.213-1.222-.462-1.921-.837-3.167-2.822-3.262-2.951-.096-.13-.778-1.036-.778-1.975 0-.939.493-1.401.669-1.593.175-.192.383-.24.511-.24.128 0 .256 0 .368.006.118.006.276-.045.431.328.16.386.544 1.328.592 1.425.048.096.08.208.016.335-.064.128-.096.208-.192.32-.096.112-.202.25-.288.336-.096.096-.197.2-.085.392.112.192.499.824 1.07 1.334.735.657 1.355.861 1.547.957.192.096.304.08.416-.048.112-.128.48-.56.608-.752.128-.192.256-.16.432-.096.176.064 1.12.528 1.312.624.192.096.32.144.368.224.048.08.048.464-.096.869z" />
+                        </svg>
+                      </a>
+
+                      {/* Copy Button */}
+                      <button
+                        id={`copy-btn-${phone.raw}`}
+                        onClick={(e) => handleCopyNumber(phone.raw, phone.formatted, e)}
+                        title="Copier le numéro"
+                        className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </div>
+
+
+          {/* ========================================================================= */}
+          {/* 4. SECTION DIVIDER: —— NOS SERVICES ——                                    */}
           {/* ========================================================================= */}
           <div className="flex items-center justify-center gap-3 my-5 px-4">
             <div className="h-[2px] w-12 sm:w-16 bg-gradient-to-r from-transparent to-cyan-400 shadow-[0_0_8px_#00e5ff]" />
@@ -228,7 +323,7 @@ export default function App() {
 
 
           {/* ========================================================================= */}
-          {/* 4. THE 5 SERVICES CARDS: Exact Reference Layout (3 Top + 2 Bottom)        */}
+          {/* 5. THE 5 SERVICES CARDS: Exact Reference Layout (3 Top + 2 Bottom)        */}
           {/* ========================================================================= */}
           <div className="space-y-3 px-3.5 sm:px-4">
             
@@ -247,6 +342,20 @@ export default function App() {
                       src={service.imageSrc} 
                       alt={service.title} 
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        const fallbackMap: Record<string, string> = {
+                          'accessoires': '/images/glass_accessories.jpg',
+                          'transformation': '/images/flat_glass_sheets.jpg',
+                          'double-vitrage': '/images/double_glazing_unit.jpg',
+                          'verre-feuillete': '/images/laminated_glass.jpg',
+                          'vitrines-douches': '/images/shower_cabin_glass.jpg',
+                        };
+                        const fallback = fallbackMap[service.id];
+                        if (fallback && !target.src.includes(fallback)) {
+                          target.src = fallback;
+                        }
+                      }}
                       className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#030e1d] via-transparent to-transparent opacity-70" />
@@ -657,6 +766,48 @@ export default function App() {
                     </div>
                     <ExternalLink className="w-4 h-4" />
                   </a>
+                </div>
+
+                {/* Commercial Contact Lines */}
+                <div className="p-3.5 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 space-y-2">
+                  <h4 className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5 fill-cyan-400 stroke-none" />
+                    <span>Lignes Service Commercial</span>
+                  </h4>
+                  <div className="space-y-1.5">
+                    {COMMERCIAL_CONTACT.phoneNumbers.map((phone) => (
+                      <div key={phone.raw} className="flex items-center justify-between gap-2 p-2 rounded-xl bg-[#020b18]/80 border border-cyan-500/20 text-xs">
+                        <div className="text-left">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-mono font-bold text-white text-xs">{phone.formatted}</span>
+                            <span className="text-[10px] text-cyan-300 font-semibold bg-cyan-500/15 border border-cyan-400/30 px-1.5 py-0.2 rounded">
+                              Service Commercial
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <a 
+                            href={phone.telUrl} 
+                            title={`Appeler ${phone.formatted}`}
+                            className="p-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white flex items-center justify-center transition-transform active:scale-95"
+                          >
+                            <Phone className="w-3 h-3 fill-white stroke-none" />
+                          </a>
+                          <a 
+                            href={phone.whatsappUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            title={`WhatsApp avec ${phone.formatted}`}
+                            className="p-1.5 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white flex items-center justify-center transition-transform active:scale-95"
+                          >
+                            <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
+                              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.311.045-.698.055-1.135-.084-.285-.091-.65-.213-1.222-.462-1.921-.837-3.167-2.822-3.262-2.951-.096-.13-.778-1.036-.778-1.975 0-.939.493-1.401.669-1.593.175-.192.383-.24.511-.24.128 0 .256 0 .368.006.118.006.276-.045.431.328.16.386.544 1.328.592 1.425.048.096.08.208.016.335-.064.128-.096.208-.192.32-.096.112-.202.25-.288.336-.096.096-.197.2-.085.392.112.192.499.824 1.07 1.334.735.657 1.355.861 1.547.957.192.096.304.08.416-.048.112-.128.48-.56.608-.752.128-.192.256-.16.432-.096.176.064 1.12.528 1.312.624.192.096.32.144.368.224.048.08.048.464-.096.869z" />
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

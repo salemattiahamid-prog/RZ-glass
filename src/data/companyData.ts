@@ -112,27 +112,27 @@ export const COMMERCIAL_CONTACT = {
   phoneNumbers: [
     {
       raw: "0652274793",
-      formatted: "0652274793",
+      formatted: "0652 27 47 93",
       label: "Ligne 1",
-      role: "Service Commercial & Devis",
+      role: "Service Commercial",
       badge: "Appel & WhatsApp",
       telUrl: "tel:0652274793",
       whatsappUrl: "https://wa.me/213652274793"
     },
     {
       raw: "0652274792",
-      formatted: "0652274792",
+      formatted: "0652 27 47 92",
       label: "Ligne 2",
-      role: "Service Commercial & Suivi",
+      role: "Service Commercial",
       badge: "Appel & WhatsApp",
       telUrl: "tel:0652274792",
       whatsappUrl: "https://wa.me/213652274792"
     },
     {
       raw: "0540864281",
-      formatted: "0540864281",
+      formatted: "0540 86 42 81",
       label: "Ligne 3",
-      role: "Direction & Accueil",
+      role: "Service Commercial",
       badge: "Ligne Directe",
       telUrl: "tel:0540864281",
       whatsappUrl: "https://wa.me/213540864281"
