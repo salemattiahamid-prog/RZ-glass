@@ -92,6 +92,12 @@ export default function App() {
               src={COMMERCIAL_CONTACT.heroImage} 
               alt="RZ Glass Architecture Villa" 
               referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('hero_glass_villa.jpg')) {
+                  target.src = '/images/hero_glass_villa.jpg';
+                }
+              }}
               className="w-full h-full object-cover object-center scale-[1.02]" 
             />
 
@@ -279,6 +285,20 @@ export default function App() {
                       src={service.imageSrc} 
                       alt={service.title} 
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        const fallbackMap: Record<string, string> = {
+                          'accessoires': '/images/glass_accessories.jpg',
+                          'transformation': '/images/flat_glass_sheets.jpg',
+                          'double-vitrage': '/images/double_glazing_unit.jpg',
+                          'verre-feuillete': '/images/laminated_glass.jpg',
+                          'vitrines-douches': '/images/shower_cabin_glass.jpg',
+                        };
+                        const fallback = fallbackMap[service.id];
+                        if (fallback && !target.src.includes(fallback)) {
+                          target.src = fallback;
+                        }
+                      }}
                       className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#030e1d] via-transparent to-transparent opacity-70" />
@@ -472,6 +492,20 @@ export default function App() {
                 src={selectedService.imageSrc} 
                 alt={selectedService.title} 
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  const fallbackMap: Record<string, string> = {
+                    'accessoires': '/images/glass_accessories.jpg',
+                    'transformation': '/images/flat_glass_sheets.jpg',
+                    'double-vitrage': '/images/double_glazing_unit.jpg',
+                    'verre-feuillete': '/images/laminated_glass.jpg',
+                    'vitrines-douches': '/images/shower_cabin_glass.jpg',
+                  };
+                  const fallback = fallbackMap[selectedService.id];
+                  if (fallback && !target.src.includes(fallback)) {
+                    target.src = fallback;
+                  }
+                }}
                 className="w-full h-full object-cover" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#08152a] via-[#08152a]/40 to-transparent" />

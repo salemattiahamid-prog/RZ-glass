@@ -1,3 +1,10 @@
+import heroGlassVilla from '../assets/images/hero_glass_villa.jpg';
+import glassAccessories from '../assets/images/glass_accessories.jpg';
+import flatGlassSheets from '../assets/images/flat_glass_sheets.jpg';
+import doubleGlazingUnit from '../assets/images/double_glazing_unit.jpg';
+import laminatedGlass from '../assets/images/laminated_glass.jpg';
+import showerCabinGlass from '../assets/images/shower_cabin_glass.jpg';
+
 export interface GlassService {
   id: string;
   number: string;
@@ -17,7 +24,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Vente d'accessoires pour verre trempé et verre feuilleté",
     description: "Quincaillerie spécialisée, ferrures, pinces, profils aluminium, serrures, gonds et systèmes coulissants pour verre sécurit et feuilleté.",
     iconType: 'smartphone',
-    imageSrc: '/src/assets/images/glass_accessories_1789818594221.jpg',
+    imageSrc: glassAccessories,
     keyPoints: [
       "Charnières & pinces inox haute résistance",
       "Profils de maintien en aluminium",
@@ -32,7 +39,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Transformation du verre plat",
     description: "Usinage et façonnage sur mesure : découpe de précision, polissage joint plat poli (JPP), biseautage, perçages et encoches techniques.",
     iconType: 'layers',
-    imageSrc: '/src/assets/images/flat_glass_sheets_1789818609512.jpg',
+    imageSrc: flatGlassSheets,
     keyPoints: [
       "Découpe rectiligne et en forme",
       "Joint Plat Poli (JPP) et arêtes abattues",
@@ -47,7 +54,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Double vitrage",
     description: "Fabrication de vitrages isolants thermiques et acoustiques avec intercalaires étanches pour fenêtres, baies et façades.",
     iconType: 'window',
-    imageSrc: '/src/assets/images/double_glazing_unit_1789818623175.jpg',
+    imageSrc: doubleGlazingUnit,
     keyPoints: [
       "Isolation thermique renforcée (confort été/hiver)",
       "Affaiblissement acoustique contre les bruits extérieurs",
@@ -62,7 +69,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Verre feuilleté",
     description: "Assemblage de vitrages de sécurité avec films PVB pour la protection des personnes, garde-corps, verrières et retard à l'effraction.",
     iconType: 'shield',
-    imageSrc: '/src/assets/images/laminated_glass_1789818635608.jpg',
+    imageSrc: laminatedGlass,
     keyPoints: [
       "Protection contre les risques de chute et blessures",
       "Sécurité anti-effraction et retardateur d'intrusion",
@@ -77,7 +84,7 @@ export const SERVICES_LIST: GlassService[] = [
     title: "Façonnage vitrines et cabines de douches",
     description: "Conception et façonnage sur mesure de vitrines commerciales panoramiques, cloisons vitrées et parois de douches en verre trempé sécurit.",
     iconType: 'shower',
-    imageSrc: '/src/assets/images/shower_cabin_glass_1789818650126.jpg',
+    imageSrc: showerCabinGlass,
     keyPoints: [
       "Vitrines de magasins & devantures commerciales",
       "Cabines et parois de douche sur mesure en verre trempé",
@@ -100,7 +107,7 @@ export interface PhoneNumberInfo {
 export const COMMERCIAL_CONTACT = {
   brandName: "RZ Glass",
   brandSubtitle: "SAFETY GLASS TECHNOLOGY",
-  heroImage: "/src/assets/images/hero_glass_villa_1789818580678.jpg",
+  heroImage: heroGlassVilla,
   label: "Service Commercial",
   phoneNumbers: [
     {
